@@ -1,8 +1,8 @@
 import Entity from "./entity.js"
 
 export default class Circle extends Entity {
-    constructor(p, r) {
-        super(p)
+    constructor(x, y, r) {
+        super(x, y)
         this.r = r
     }
 

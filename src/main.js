@@ -1,5 +1,4 @@
 import Circle from "./circle.js"
-import {vec2} from "gl-matrix"
 
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
@@ -12,7 +11,7 @@ context.scale(scale, scale)
 let animationRequest = null
 
 const entities = []
-entities.push(new Circle(vec2.create(0, 0), 200))
+entities.push(new Circle(0, 0, 200))
 
 function start() {
     if (!animationRequest) {
