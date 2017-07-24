@@ -1,0 +1,16 @@
+{
+  "name": "physics",
+  "version": "1.0.0",
+  "description": "Physics simulation in JavaScript",
+  "main": "src/main.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start": "npm run watch"
+  },
+  "author": "Jonas Luebbers",
+  "license": "Unlicense",
+  "devDependencies": {
+    "webpack": "^3.3.0"
+  }
+}
