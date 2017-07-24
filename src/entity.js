@@ -30,4 +30,28 @@ export default class Entity {
         a.velocity -= a.inverseMass * impulse
         b.velocity += b.inverseMass * impulse
     }
+
+    static collideCircleAndCircle(a, b) {
+        const separation = vec2.create()
+        vec2.subtract(separation, b.position, a.position)
+
+        const combinedRadius = a.radius + b.radius
+        const distance = vec2.length(separation)
+
+        if (distance > combinedRadius) {
+            return null
+        }
+        else if (distance !== 0) {
+            const penetration = separation - distance
+            const normal = vec2.create()
+            vec2.scale(normal, separation, distance)
+            return {a, b, penetration, normal}
+        }
+        else {
+            const penetration = combinedRadius
+            const normal = vec2.create()
+            vec2.random(normal)
+            return {a, b, penetration, normal}
+        }
+    }
 }

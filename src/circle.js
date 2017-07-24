@@ -1,15 +1,17 @@
 import Entity from "./entity.js"
 
 export default class Circle extends Entity {
-    constructor(x, y, r) {
+    constructor(x, y, radius) {
         super(x, y)
-        this.r = r
+        this.radius = radius
     }
 
     draw(context) {
+        const [x, y] = this.position
+
         context.beginPath()
         context.fillStyle = '#ff0000'
-        context.arc(this.p[0], this.p[1], this.r, 0, 2 * Math.PI)
+        context.arc(x, y, this.radius, 0, 2 * Math.PI)
         context.fill()
     }
 }
