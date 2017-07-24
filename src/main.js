@@ -1,3 +1,5 @@
+import {vec2} from "gl-matrix"
+import Entity from "./entity.js"
 import Circle from "./circle.js"
 
 const canvas = document.getElementById('canvas')
@@ -10,8 +12,13 @@ context.scale(scale, scale)
 
 let animationRequest = null
 
-const entities = []
-entities.push(new Circle(0, 0, 200))
+const circleA = new Circle(-100, -10, 50)
+circleA.applyForce(vec2.fromValues(2, 0))
+
+const circleB = new Circle(100, 10, 50)
+circleB.applyForce(vec2.fromValues(-2, 0))
+
+const entities = [circleA, circleB]
 
 function start() {
     if (!animationRequest) {
@@ -35,11 +42,24 @@ function draw() {
     context.save()
     context.translate(canvas.width / 2, canvas.height / 2)
 
-    entities.forEach((entity) => {
-        entity.draw(context)
-    })
+    entities.forEach((entity) => {entity.needsUpdate = true})
+    entities.forEach((entity) => {update(entity)})
 
     context.restore()
+
+    animationRequest = requestAnimationFrame(draw)
+}
+
+function update(entity) {
+    entities.forEach((pairedEntity) => {
+        if (pairedEntity.needsUpdate && pairedEntity !== entity) {
+            const manifold = Entity.collideCircleAndCircle(entity, pairedEntity)
+            Entity.resolveCollision(manifold)
+        }
+    })
+
+    entity.needsUpdate = false
+    entity.draw(context)
 }
 
 start()

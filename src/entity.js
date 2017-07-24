@@ -1,18 +1,35 @@
 import {vec2} from "gl-matrix"
 
 export default class Entity {
-    constructor(x, y) {
+    constructor(x, y, mass) {
         this.position = vec2.fromValues(x, y)
         this.velocity = vec2.create()
-        this.mass = 1
+        this.mass = mass || 1
         this.inverseMass = 1 / this.mass
+        this.restitution = 0.2
+
+        this.needsUpdate = false
     }
 
-    static resolveCollsion(manifold) {
+    applyForce(f) {
+        const acceleration = vec2.create()
+        vec2.scale(acceleration, f, this.inverseMass)
+        vec2.add(this.velocity, this.velocity, acceleration)
+    }
+
+    draw() {
+        vec2.add(this.position, this.position, this.velocity)
+    }
+
+    static resolveCollision(manifold) {
+        if (!manifold) {
+            return
+        }
+
         const {a, b, normal, penetration} = manifold
 
         const relativeVelocity = vec2.create()
-        vec2.subtract(relativeVelocity, a.velocity, b.velocity)
+        vec2.subtract(relativeVelocity, b.velocity, a.velocity)
 
         const normalVelocity = vec2.dot(relativeVelocity, normal)
 
@@ -20,15 +37,18 @@ export default class Entity {
             return
         }
 
-        const restitution = min(a.restitution, b.restitution)
+        const restitution = Math.min(a.restitution, b.restitution)
 
         const impulseMagnitude = (-1 - restitution) * normalVelocity / (a.inverseMass + b.inverseMass)
 
         const impulse = vec2.create()
         vec2.scale(impulse, normal, impulseMagnitude)
+        b.applyForce(impulse)
 
-        a.velocity -= a.inverseMass * impulse
-        b.velocity += b.inverseMass * impulse
+        const oppositeImpulse = vec2.create()
+        vec2.scale(oppositeImpulse, impulse, -1)
+        a.applyForce(oppositeImpulse)
+
     }
 
     static collideCircleAndCircle(a, b) {
@@ -44,7 +64,7 @@ export default class Entity {
         else if (distance !== 0) {
             const penetration = separation - distance
             const normal = vec2.create()
-            vec2.scale(normal, separation, distance)
+            vec2.scale(normal, separation, 1 / distance)
             return {a, b, penetration, normal}
         }
         else {
