@@ -12,5 +12,8 @@
   "license": "Unlicense",
   "devDependencies": {
     "webpack": "^3.3.0"
+  },
+  "dependencies": {
+    "gl-matrix": "^2.4.0"
   }
 }
