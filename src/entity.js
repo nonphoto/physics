@@ -61,7 +61,7 @@ export default class Entity {
             return null
         }
         else if (distance !== 0) {
-            const penetration = separation - distance
+            const penetration = distance - combinedRadius
             const normal = vec2.create()
             vec2.scale(normal, separation, 1 / distance)
             return {a, b, penetration, normal}
@@ -80,6 +80,7 @@ export default class Entity {
         vec2.dot(separation, separation, line.normal)
 
         const distance = vec2.length(separation)
+
         if (distance > circle.radius) {
             return null
         }

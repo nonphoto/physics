@@ -1,6 +1,7 @@
 import {vec2} from "gl-matrix"
 import Entity from "./entity.js"
 import Circle from "./circle.js"
+import Line from "./line.js"
 
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
@@ -12,13 +13,27 @@ context.scale(scale, scale)
 
 let animationRequest = null
 
+const entities = []
+
+
+
 const circleA = new Circle(-100, -10, 50)
 circleA.applyForce(vec2.fromValues(1, 0))
+entities.push(circleA)
 
 const circleB = new Circle(100, 10, 50)
 circleB.applyForce(vec2.fromValues(-1, 0))
+entities.push(circleB)
 
-const entities = [circleA, circleB]
+const halfWidth = (canvas.width / 2) - 10
+const halfHeight = (canvas.height / 2) - 10
+
+entities.push(new Line(-halfWidth, 0, 1, 0))
+entities.push(new Line(halfWidth, 0, -1, 0))
+entities.push(new Line(0, -halfHeight, 0, 1))
+entities.push(new Line(0, halfHeight, 0, -1))
+
+
 
 function start() {
     if (!animationRequest) {
@@ -52,7 +67,7 @@ function draw() {
 
 function update(entity) {
     entities.forEach((pairedEntity) => {
-        if (pairedEntity.needsUpdate && pairedEntity !== entity) {
+        if (pairedEntity.needsUpdate && pairedEntity !== entity && entity instanceof Circle && pairedEntity instanceof Circle) {
             const manifold = Entity.collideCircleAndCircle(entity, pairedEntity)
             Entity.resolveCollision(manifold)
         }
