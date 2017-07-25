@@ -3,6 +3,7 @@ import * as physics from './physics.js'
 import Entity from './entity.js'
 import Circle from './circle.js'
 import Line from './line.js'
+import Rect from './rect.js'
 
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
@@ -16,16 +17,34 @@ let animationRequest = null
 
 const entities = []
 
-
-
-for (let i = 0; i < 10; i++) {
+function createRandomEntity(type) {
     const x = Math.floor(Math.random() * 300) - 150
     const y = Math.floor(Math.random() * 400) - 200
     const dx = Math.random() * 10
     const dy = Math.random() * 10
-    const circle = new Circle(x, y, 50)
-    circle.applyForce(vec2.fromValues(dx, dy))
-    entities.push(circle)
+    const force = vec2.fromValues(dx, dy)
+
+    if (type === 'circle') {
+        const circle = new Circle(x, y, 50)
+        circle.applyForce(force)
+        return circle
+    }
+    else if (type === 'rect') {
+        const rect = new Rect(x, y, 40, 40)
+        rect.applyForce(force)
+        return rect
+    }
+    else {
+        return
+    }
+}
+
+for (let i = 0; i < 5; i++) {
+    entities.push(createRandomEntity('circle'))
+}
+
+for (let i = 0; i < 5; i++) {
+    entities.push(createRandomEntity('rect'))
 }
 
 const halfWidth = (canvas.width / 2) - 50
