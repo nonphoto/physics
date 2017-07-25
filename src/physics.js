@@ -1,9 +1,5 @@
 import {vec2} from 'gl-matrix'
 
-function clamp(value, min, max) {
-    return Math.min(max, Math.max(min, value))
-}
-
 export function resolveCollision(manifold) {
     if (!manifold) return
 
@@ -70,10 +66,7 @@ export function collideCircleAndLine(circle, line) {
 }
 
 export function collideRectAndCircle(rect, circle) {
-    const bounds = rect.bounds
-    const x = clamp(circle.position[0], bounds.left, bounds.right)
-    const y = clamp(circle.position[1], bounds.top, bounds.bottom)
-    const closestPoint = vec2.fromValues(x, y)
+    const closestPoint = rect.getClosestPoint(circle.position)
 
     const separation = vec2.create()
     vec2.subtract(separation, circle.position, closestPoint)
@@ -88,5 +81,21 @@ export function collideRectAndCircle(rect, circle) {
         const normal = vec2.create()
         vec2.normalize(normal, separation)
         return {a: rect, b: circle, penetration, normal}
+    }
+}
+
+export function collideRectAndLine(rect, line) {
+    const closestPoint = rect.getClosestPoint(line.position)
+
+    const separation = vec2.create()
+    vec2.subtract(separation, closestPoint, line.position)
+
+    const distance = vec2.dot(separation, line.normal)
+
+    if (distance > 0) {
+        return null
+    }
+    else {
+        return {a: line, b: rect, penetration: distance, normal: line.normal}
     }
 }

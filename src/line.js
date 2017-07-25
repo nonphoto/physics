@@ -2,6 +2,7 @@ import {vec2} from 'gl-matrix'
 import * as physics from './physics.js'
 import Entity from './entity.js'
 import Circle from './circle.js'
+import Rect from './rect.js'
 
 export default class Line extends Entity {
     constructor(x, y, dx, dy) {
@@ -33,6 +34,9 @@ export default class Line extends Entity {
     collide(that) {
         if (that instanceof Circle) {
             return physics.collideCircleAndLine(that, this)
+        }
+        else if (that instanceof Rect) {
+            return physics.collideRectAndLine(that, this)
         }
         else {
             return null

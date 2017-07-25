@@ -1,6 +1,12 @@
+import * as physics from './physics.js'
 import {vec2} from 'gl-matrix'
 import Entity from './entity.js'
 import Circle from './circle.js'
+import Line from './line.js'
+
+function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value))
+}
 
 export default class Rect extends Entity {
     constructor(x, y, rw, rh) {
@@ -20,6 +26,12 @@ export default class Rect extends Entity {
         }
     }
 
+    getClosestPoint(p) {
+        const x = clamp(p[0], this.bounds.left, this.bounds.right)
+        const y = clamp(p[1], this.bounds.top, this.bounds.bottom)
+        return vec2.fromValues(x, y)
+    }
+
     draw(context) {
         super.draw()
 
@@ -35,6 +47,9 @@ export default class Rect extends Entity {
     collide(that) {
         if (that instanceof Circle) {
             return physics.collideRectAndCircle(this, that)
+        }
+        else if (that instanceof Line) {
+            return physics.collideRectAndLine(this, that)
         }
         else {
             return null

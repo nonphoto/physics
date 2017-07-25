@@ -20,8 +20,8 @@ const entities = []
 function createRandomEntity(type) {
     const x = Math.floor(Math.random() * 300) - 150
     const y = Math.floor(Math.random() * 400) - 200
-    const dx = Math.random() * 10
-    const dy = Math.random() * 10
+    const dx = (Math.random() * 10) - 5
+    const dy = (Math.random() * 10) - 5
     const force = vec2.fromValues(dx, dy)
 
     if (type === 'circle') {
@@ -30,7 +30,7 @@ function createRandomEntity(type) {
         return circle
     }
     else if (type === 'rect') {
-        const rect = new Rect(x, y, 40, 40)
+        const rect = new Rect(x, y, 45, 45)
         rect.applyForce(force)
         return rect
     }
@@ -39,23 +39,23 @@ function createRandomEntity(type) {
     }
 }
 
-for (let i = 0; i < 5; i++) {
-    entities.push(createRandomEntity('circle'))
+function createEntities() {
+    for (let i = 0; i < 5; i++) {
+        entities.push(createRandomEntity('circle'))
+    }
+
+    for (let i = 0; i < 5; i++) {
+        entities.push(createRandomEntity('rect'))
+    }
+
+    const halfWidth = (canvas.width / 2) - 50
+    const halfHeight = (canvas.height / 2) - 50
+
+    entities.push(new Line(-halfWidth, 0, 1, 0))
+    entities.push(new Line(halfWidth, 0, -1, 0))
+    entities.push(new Line(0, -halfHeight, 0, 1))
+    entities.push(new Line(0, halfHeight, 0, -1))
 }
-
-for (let i = 0; i < 5; i++) {
-    entities.push(createRandomEntity('rect'))
-}
-
-const halfWidth = (canvas.width / 2) - 50
-const halfHeight = (canvas.height / 2) - 50
-
-entities.push(new Line(-halfWidth, 0, 1, 0))
-entities.push(new Line(halfWidth, 0, -1, 0))
-entities.push(new Line(0, -halfHeight, 0, 1))
-entities.push(new Line(0, halfHeight, 0, -1))
-
-
 
 function start() {
     if (!animationRequest) {
@@ -99,4 +99,5 @@ function update(entity) {
     entity.draw(context)
 }
 
+createEntities()
 start()
