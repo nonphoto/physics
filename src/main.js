@@ -1,7 +1,8 @@
-import {vec2} from "gl-matrix"
-import Entity from "./entity.js"
-import Circle from "./circle.js"
-import Line from "./line.js"
+import {vec2} from 'gl-matrix'
+import * as physics from './physics.js'
+import Entity from './entity.js'
+import Circle from './circle.js'
+import Line from './line.js'
 
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
@@ -68,8 +69,8 @@ function draw() {
 function update(entity) {
     entities.forEach((pairedEntity) => {
         if (pairedEntity.needsUpdate && pairedEntity !== entity && entity instanceof Circle && pairedEntity instanceof Circle) {
-            const manifold = Entity.collideCircleAndCircle(entity, pairedEntity)
-            Entity.resolveCollision(manifold)
+            const manifold = physics.collideCircleAndCircle(entity, pairedEntity)
+            physics.resolveCollision(manifold)
         }
     })
 
