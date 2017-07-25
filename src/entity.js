@@ -6,7 +6,7 @@ export default class Entity {
         this.velocity = vec2.create()
         this.mass = mass || 1
         this.inverseMass = 1 / this.mass
-        this.restitution = 0.1
+        this.restitution = 1
 
         this.needsUpdate = false
     }

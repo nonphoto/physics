@@ -19,15 +19,15 @@ const entities = []
 
 
 const circleA = new Circle(-100, -10, 50)
-circleA.applyForce(vec2.fromValues(1, 0))
+circleA.applyForce(vec2.fromValues(2, 0))
 entities.push(circleA)
 
 const circleB = new Circle(100, 10, 50)
-circleB.applyForce(vec2.fromValues(-1, 0))
+circleB.applyForce(vec2.fromValues(-2, 0))
 entities.push(circleB)
 
-const halfWidth = (canvas.width / 2) - 10
-const halfHeight = (canvas.height / 2) - 10
+const halfWidth = (canvas.width / 2) - 50
+const halfHeight = (canvas.height / 2) - 50
 
 entities.push(new Line(-halfWidth, 0, 1, 0))
 entities.push(new Line(halfWidth, 0, -1, 0))
@@ -68,8 +68,8 @@ function draw() {
 
 function update(entity) {
     entities.forEach((pairedEntity) => {
-        if (pairedEntity.needsUpdate && pairedEntity !== entity && entity instanceof Circle && pairedEntity instanceof Circle) {
-            const manifold = physics.collideCircleAndCircle(entity, pairedEntity)
+        if (pairedEntity.needsUpdate && pairedEntity !== entity) {
+            const manifold = entity.collide(pairedEntity)
             physics.resolveCollision(manifold)
         }
     })

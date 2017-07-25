@@ -1,5 +1,7 @@
-import Entity from './entity.js'
 import {vec2} from 'gl-matrix'
+import * as physics from './physics.js'
+import Entity from './entity.js'
+import Circle from './circle.js'
 
 export default class Line extends Entity {
     constructor(x, y, dx, dy) {
@@ -7,8 +9,6 @@ export default class Line extends Entity {
 
         this.normal = vec2.fromValues(dx, dy)
         vec2.normalize(this.normal, this.normal)
-
-        this.mass = Infinity
 
         this.length = 100
     }
@@ -28,5 +28,14 @@ export default class Line extends Entity {
         context.moveTo(x - dy, y + dx)
         context.lineTo(x + dy, y - dx)
         context.stroke()
+    }
+
+    collide(that) {
+        if (that instanceof Circle) {
+            return physics.collideCircleAndLine(that, this)
+        }
+        else {
+            return null
+        }
     }
 }

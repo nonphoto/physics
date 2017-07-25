@@ -52,16 +52,15 @@ export function collideCircleAndCircle(a, b) {
 export function collideCircleAndLine(circle, line) {
     const separation = vec2.create()
     vec2.subtract(separation, circle.position, line.position)
-    vec2.dot(separation, separation, line.normal)
 
-    const distance = vec2.length(separation)
+    const distance = vec2.dot(separation, line.normal)
 
     if (distance > circle.radius) {
         return null
     }
     else {
-        const penetration = distance - radius
+        const penetration = distance - circle.radius
         const normal = line.normal
-        return {circle, line, penetration, normal}
+        return {a: line, b: circle, penetration, normal}
     }
 }
