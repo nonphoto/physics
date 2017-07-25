@@ -6,7 +6,7 @@ export default class Entity {
         this.velocity = vec2.create()
         this.mass = mass || 1
         this.inverseMass = 1 / this.mass
-        this.restitution = 0.2
+        this.restitution = 0.1
 
         this.needsUpdate = false
     }
@@ -39,16 +39,15 @@ export default class Entity {
 
         const restitution = Math.min(a.restitution, b.restitution)
 
-        const impulseMagnitude = (-1 - restitution) * normalVelocity / (a.inverseMass + b.inverseMass)
+        const impulseMagnitude = (1 + restitution) * normalVelocity / (a.inverseMass + b.inverseMass)
 
         const impulse = vec2.create()
         vec2.scale(impulse, normal, impulseMagnitude)
-        b.applyForce(impulse)
+        a.applyForce(impulse)
 
         const oppositeImpulse = vec2.create()
-        vec2.scale(oppositeImpulse, impulse, -1)
-        a.applyForce(oppositeImpulse)
-
+        vec2.scale(oppositeImpulse, normal, -impulseMagnitude)
+        b.applyForce(oppositeImpulse)
     }
 
     static collideCircleAndCircle(a, b) {

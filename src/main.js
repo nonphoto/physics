@@ -13,10 +13,10 @@ context.scale(scale, scale)
 let animationRequest = null
 
 const circleA = new Circle(-100, -10, 50)
-circleA.applyForce(vec2.fromValues(2, 0))
+circleA.applyForce(vec2.fromValues(1, 0))
 
 const circleB = new Circle(100, 10, 50)
-circleB.applyForce(vec2.fromValues(-2, 0))
+circleB.applyForce(vec2.fromValues(-1, 0))
 
 const entities = [circleA, circleB]
 
