@@ -18,13 +18,15 @@ const entities = []
 
 
 
-const circleA = new Circle(-100, -10, 50)
-circleA.applyForce(vec2.fromValues(2, 0))
-entities.push(circleA)
-
-const circleB = new Circle(100, 10, 50)
-circleB.applyForce(vec2.fromValues(-2, 0))
-entities.push(circleB)
+for (let i = 0; i < 10; i++) {
+    const x = Math.floor(Math.random() * 300) - 150
+    const y = Math.floor(Math.random() * 400) - 200
+    const dx = Math.random() * 10
+    const dy = Math.random() * 10
+    const circle = new Circle(x, y, 50)
+    circle.applyForce(vec2.fromValues(dx, dy))
+    entities.push(circle)
+}
 
 const halfWidth = (canvas.width / 2) - 50
 const halfHeight = (canvas.height / 2) - 50
