@@ -9,19 +9,24 @@ export default class Line extends Entity {
         vec2.normalize(this.normal, this.normal)
 
         this.mass = Infinity
+
+        this.length = 100
     }
 
     draw(context) {
         super.draw()
 
         const [x, y] = this.position
-        const [dx, dy] = this.normal
+
+        const d = vec2.create()
+        vec2.scale(d, this.normal, this.length)
+        const [dx, dy] = d
 
         context.beginPath()
 
         context.strokeStyle = '#000000'
-        context.moveTo(x - (dy * 50), y + (dx * 50))
-        context.lineTo(x + (dy * 50), y - (dx * 50))
+        context.moveTo(x - dy, y + dx)
+        context.lineTo(x + dy, y - dx)
         context.stroke()
     }
 }
