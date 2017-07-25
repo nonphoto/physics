@@ -1,13 +1,13 @@
 import {vec2} from 'gl-matrix'
 
 export default class Entity {
-    constructor(x, y, mass) {
+    constructor(x = 0, y = 0, rotation = 0, mass = 1, restitution = 1) {
         this.position = vec2.fromValues(x, y)
         this.velocity = vec2.create()
-        this.mass = mass || 1
+        this.rotation = rotation
+        this.mass = mass
         this.inverseMass = 1 / this.mass
-        this.restitution = 1
-
+        this.restitution = restitution
         this.needsUpdate = false
     }
 

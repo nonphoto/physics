@@ -6,7 +6,7 @@ import Rect from './rect.js'
 
 export default class Line extends Entity {
     constructor(x, y, dx, dy) {
-        super(x, y, Infinity)
+        super(x, y, 0, Infinity)
 
         this.normal = vec2.fromValues(dx, dy)
         vec2.normalize(this.normal, this.normal)
