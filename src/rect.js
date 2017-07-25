@@ -1,5 +1,5 @@
 import * as physics from './physics.js'
-import {vec2} from 'gl-matrix'
+import {vec2, mat2} from 'gl-matrix'
 import Entity from './entity.js'
 import Circle from './circle.js'
 import Line from './line.js'
@@ -10,7 +10,8 @@ function clamp(value, min, max) {
 
 export default class Rect extends Entity {
     constructor(x, y, rw, rh) {
-        super(x, y)
+        const rotation = Math.random() * 6
+        super(x, y, rotation)
         this.dimensions = vec2.fromValues(rw, rh)
     }
 
@@ -26,10 +27,24 @@ export default class Rect extends Entity {
         }
     }
 
-    getClosestPoint(p) {
-        const x = clamp(p[0], this.bounds.left, this.bounds.right)
-        const y = clamp(p[1], this.bounds.top, this.bounds.bottom)
-        return vec2.fromValues(x, y)
+    getClosestPoint(point) {
+        const transform = mat2.create()
+        mat2.fromRotation(transform, -this.rotation)
+
+        const a = vec2.create()
+        vec2.subtract(a, point, this.position)
+        vec2.transformMat2(a, a, transform)
+
+        const [rw, rh] = this.dimensions
+        const x = clamp(a[0], -rw, rw)
+        const y = clamp(a[1], -rh, rh)
+        const b = vec2.fromValues(x, y)
+
+        mat2.fromRotation(transform, this.rotation)
+        vec2.transformMat2(b, b, transform)
+        vec2.add(b, b, this.position)
+
+        return b
     }
 
     draw(context) {
@@ -38,10 +53,16 @@ export default class Rect extends Entity {
         const [x, y] = this.position
         const [rw, rh] = this.dimensions
 
+        context.save()
+        context.translate(x, y)
+        context.rotate(this.rotation)
+
         context.beginPath()
         context.fillStyle = '#ff00ff'
-        context.rect(x - rw, y - rh, rw * 2, rh * 2)
+        context.rect(-rw, -rh, rw * 2, rh * 2)
         context.fill()
+
+        context.restore()
     }
 
     collide(that) {
