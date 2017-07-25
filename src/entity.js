@@ -73,4 +73,20 @@ export default class Entity {
             return {a, b, penetration, normal}
         }
     }
+
+    static collideCircleAndLine(circle, line) {
+        const separation = vec2.create()
+        vec2.subtract(separation, circle.position, line.position)
+        vec2.dot(separation, separation, line.normal)
+
+        const distance = vec2.length(separation)
+        if (distance > circle.radius) {
+            return null
+        }
+        else {
+            const penetration = distance - radius
+            const normal = line.normal
+            return {circle, line, penetration, normal}
+        }
+    }
 }
