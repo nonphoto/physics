@@ -32,14 +32,6 @@ export default class Line extends Entity {
     }
 
     collide(that) {
-        if (that instanceof Circle) {
-            return physics.collideCircleAndLine(that, this)
-        }
-        else if (that instanceof Rect) {
-            return physics.collideRectAndLine(that, this)
-        }
-        else {
-            return null
-        }
+        return physics.collideEntityAndLine(that, this)
     }
 }

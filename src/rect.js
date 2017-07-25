@@ -70,7 +70,7 @@ export default class Rect extends Entity {
             return physics.collideRectAndCircle(this, that)
         }
         else if (that instanceof Line) {
-            return physics.collideRectAndLine(this, that)
+            return physics.collideEntityAndLine(this, that)
         }
         else {
             return null

@@ -49,22 +49,6 @@ export function collideCircleAndCircle(a, b) {
     }
 }
 
-export function collideCircleAndLine(circle, line) {
-    const separation = vec2.create()
-    vec2.subtract(separation, circle.position, line.position)
-
-    const distance = vec2.dot(separation, line.normal)
-
-    if (distance > circle.radius) {
-        return null
-    }
-    else {
-        const penetration = distance - circle.radius
-        const normal = line.normal
-        return {a: line, b: circle, penetration, normal}
-    }
-}
-
 export function collideRectAndCircle(rect, circle) {
     const closestPoint = rect.getClosestPoint(circle.position)
 
@@ -84,11 +68,9 @@ export function collideRectAndCircle(rect, circle) {
     }
 }
 
-export function collideRectAndLine(rect, line) {
-    const closestPoint = rect.getClosestPoint(line.position)
-
+export function collideEntityAndLine(entity, line) {
     const separation = vec2.create()
-    vec2.subtract(separation, closestPoint, line.position)
+    vec2.subtract(separation, entity.position, line.position)
 
     const distance = vec2.dot(separation, line.normal)
 
@@ -96,6 +78,6 @@ export function collideRectAndLine(rect, line) {
         return null
     }
     else {
-        return {a: line, b: rect, penetration: distance, normal: line.normal}
+        return {a: line, b: entity, penetration: distance, normal: line.normal}
     }
 }

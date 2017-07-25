@@ -25,7 +25,7 @@ export default class Circle extends Entity {
             return physics.collideCircleAndCircle(this, that)
         }
         else if (that instanceof Line) {
-            return physics.collideCircleAndLine(this, that)
+            return physics.collideEntityAndLine(this, that)
         }
         else if (that instanceof Rect) {
             return physics.collideRectAndCircle(that, this)
