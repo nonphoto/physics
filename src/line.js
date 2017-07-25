@@ -5,7 +5,7 @@ import Circle from './circle.js'
 
 export default class Line extends Entity {
     constructor(x, y, dx, dy) {
-        super(x, y)
+        super(x, y, Infinity)
 
         this.normal = vec2.fromValues(dx, dy)
         vec2.normalize(this.normal, this.normal)
