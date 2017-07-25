@@ -1,6 +1,7 @@
 import * as physics from './physics.js'
 import Entity from './entity.js'
 import Line from './line.js'
+import Rect from './rect.js'
 
 export default class Circle extends Entity {
     constructor(x, y, radius) {
@@ -25,6 +26,9 @@ export default class Circle extends Entity {
         }
         else if (that instanceof Line) {
             return physics.collideCircleAndLine(this, that)
+        }
+        else if (that instanceof Rect) {
+            return physics.collideRectAndCircle(that, this)
         }
         else {
             return null
