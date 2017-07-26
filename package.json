@@ -1,5 +1,5 @@
 {
-  "name": "physics",
+  "name": "@nonphoto/physics",
   "version": "1.0.0",
   "description": "Physics simulation in JavaScript",
   "main": "src/main.js",
