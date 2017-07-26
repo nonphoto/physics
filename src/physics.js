@@ -19,10 +19,12 @@ export function resolveCollision(manifold) {
     const impulse = vec2.create()
     vec2.scale(impulse, normal, impulseMagnitude)
     a.applyForce(impulse)
+    a.randomizeAngularVelocity()
 
     const oppositeImpulse = vec2.create()
     vec2.scale(oppositeImpulse, normal, -impulseMagnitude)
     b.applyForce(oppositeImpulse)
+    b.randomizeAngularVelocity()
 }
 
 export function collideCircleAndCircle(a, b) {

@@ -5,10 +5,15 @@ export default class Entity {
         this.position = vec2.fromValues(x, y)
         this.velocity = vec2.create()
         this.rotation = rotation
+        this.randomizeAngularVelocity()
         this.mass = mass
         this.inverseMass = 1 / this.mass
         this.restitution = restitution
         this.needsUpdate = false
+    }
+
+    randomizeAngularVelocity(maxVelocity = 0.1) {
+        this.angularVelocity = (Math.random() * maxVelocity * 2) - maxVelocity
     }
 
     applyForce(f) {
@@ -19,6 +24,7 @@ export default class Entity {
 
     draw() {
         vec2.add(this.position, this.position, this.velocity)
+        this.rotation += this.angularVelocity
     }
 
     collide() {
