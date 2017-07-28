@@ -4,9 +4,10 @@ import Line from './line.js'
 import Rect from './rect.js'
 
 export default class Circle extends Entity {
-    constructor(x, y, radius) {
+    constructor(x, y, radius, color) {
         super(x, y)
         this.radius = radius
+        this.color = color
     }
 
     draw(context) {
@@ -15,7 +16,7 @@ export default class Circle extends Entity {
         const [x, y] = this.position
 
         context.beginPath()
-        context.fillStyle = '#ff0000'
+        context.fillStyle = this.color
         context.arc(x, y, this.radius, 0, 2 * Math.PI)
         context.fill()
     }

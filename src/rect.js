@@ -9,10 +9,11 @@ function clamp(value, min, max) {
 }
 
 export default class Rect extends Entity {
-    constructor(x, y, rw, rh) {
-        const rotation = Math.random() * 6
+    constructor(x, y, rw, rh, color) {
+        const rotation = Math.random() * Math.PI * 2
         super(x, y, rotation)
         this.dimensions = vec2.fromValues(rw, rh)
+        this.color = color
     }
 
     get bounds() {
@@ -58,7 +59,7 @@ export default class Rect extends Entity {
         context.rotate(this.rotation)
 
         context.beginPath()
-        context.fillStyle = '#ff00ff'
+        context.fillStyle = this.color
         context.rect(-rw, -rh, rw * 2, rh * 2)
         context.fill()
 

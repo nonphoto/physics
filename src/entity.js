@@ -12,7 +12,7 @@ export default class Entity {
         this.needsUpdate = false
     }
 
-    randomizeAngularVelocity(maxVelocity = 0.1) {
+    randomizeAngularVelocity(maxVelocity = 0.01) {
         this.angularVelocity = (Math.random() * maxVelocity * 2) - maxVelocity
     }
 

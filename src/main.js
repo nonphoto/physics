@@ -8,7 +8,8 @@ import Rect from './rect.js'
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
 
-const scale = window.devicePixelRatio || 1
+// const scale = window.devicePixelRatio || 1
+const scale = 1
 canvas.width = canvas.clientWidth * scale
 canvas.height = canvas.clientHeight * scale
 context.scale(scale, scale)
@@ -25,12 +26,12 @@ function createRandomEntity(type) {
     const force = vec2.fromValues(dx, dy)
 
     if (type === 'circle') {
-        const circle = new Circle(x, y, 50)
+        const circle = new Circle(x, y, 50, '#ff0000')
         circle.applyForce(force)
         return circle
     }
     else if (type === 'rect') {
-        const rect = new Rect(x, y, 45, 45)
+        const rect = new Rect(x, y, 45, 45, '#ff00ff')
         rect.applyForce(force)
         return rect
     }
@@ -51,10 +52,10 @@ function createEntities() {
     const halfWidth = (canvas.width / 2) - 50
     const halfHeight = (canvas.height / 2) - 50
 
-    entities.push(new Line(-halfWidth, 0, 1, 0))
-    entities.push(new Line(halfWidth, 0, -1, 0))
-    entities.push(new Line(0, -halfHeight, 0, 1))
-    entities.push(new Line(0, halfHeight, 0, -1))
+    entities.push(new Line(-halfWidth, 0, 1, 0, true))
+    entities.push(new Line(halfWidth, 0, -1, 0, true))
+    entities.push(new Line(0, -halfHeight, 0, 1, true))
+    entities.push(new Line(0, halfHeight, 0, -1, true))
 }
 
 function start() {
