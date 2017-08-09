@@ -1,6 +1,6 @@
 {
   "name": "@nonphoto/physics",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Physics simulation in JavaScript",
   "main": "src/index.js",
   "scripts": {
