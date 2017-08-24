@@ -1,9 +1,9 @@
-import {vec2} from 'gl-matrix'
+import Vector from '@nonphoto/vector'
 
 export default class Entity {
     constructor(x = 0, y = 0, rotation = 0, mass = 1, restitution = 1) {
-        this.position = vec2.fromValues(x, y)
-        this.velocity = vec2.create()
+        this.position = new Vector(x, y)
+        this.velocity = new Vector()
         this.rotation = rotation
         this.randomizeAngularVelocity()
         this.mass = mass
@@ -17,13 +17,12 @@ export default class Entity {
     }
 
     applyForce(f) {
-        const acceleration = vec2.create()
-        vec2.scale(acceleration, f, this.inverseMass)
-        vec2.add(this.velocity, this.velocity, acceleration)
+        const acceleration = Vector.clone(f).scale(this.inverseMass)
+        this.velocity.add(acceleration)
     }
 
     draw() {
-        vec2.add(this.position, this.position, this.velocity)
+        this.position.add(this.velocity)
         this.rotation += this.angularVelocity
     }
 

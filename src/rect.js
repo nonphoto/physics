@@ -1,8 +1,9 @@
 import * as physics from './physics.js'
-import {vec2, mat2} from 'gl-matrix'
 import Entity from './entity.js'
 import Circle from './circle.js'
 import Line from './line.js'
+import {vec2, mat2} from 'gl-matrix'
+import Vector from '@nonphoto/vector'
 
 function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value))
@@ -12,13 +13,13 @@ export default class Rect extends Entity {
     constructor(x, y, rw, rh, color) {
         const rotation = Math.random() * Math.PI * 2
         super(x, y, rotation)
-        this.dimensions = vec2.fromValues(rw, rh)
+        this.dimensions = new Vector(rw, rh)
         this.color = color
     }
 
     get bounds() {
-        const [x, y] = this.position
-        const [rw, rh] = this.dimensions
+        const { x, y } = this.position
+        const [ rw, rh ] = this.dimensions.toArray()
 
         return {
             top: y - rh,
@@ -29,30 +30,21 @@ export default class Rect extends Entity {
     }
 
     getClosestPoint(point) {
-        const transform = mat2.create()
-        mat2.fromRotation(transform, -this.rotation)
-
-        const a = vec2.create()
-        vec2.subtract(a, point, this.position)
-        vec2.transformMat2(a, a, transform)
-
-        const [rw, rh] = this.dimensions
-        const x = clamp(a[0], -rw, rw)
-        const y = clamp(a[1], -rh, rh)
-        const b = vec2.fromValues(x, y)
-
-        mat2.fromRotation(transform, this.rotation)
-        vec2.transformMat2(b, b, transform)
-        vec2.add(b, b, this.position)
-
+        const [rw, rh] = this.dimensions.toArray()
+        const a = Vector.clone(point).subtract(this.position).rotate(-this.rotation)
+        const x = clamp(a.x, -rw, rw)
+        const y = clamp(a.y, -rh, rh)
+        const b = new Vector(x, y).rotate(this.rotation).add(this.position)
         return b
     }
 
     draw(context) {
         super.draw()
 
-        const [x, y] = this.position
-        const [rw, rh] = this.dimensions
+        const point = this.getClosestPoint(new Vector())
+
+        const { x, y } = this.position
+        const [ rw, rh ] = this.dimensions.toArray()
 
         context.save()
         context.translate(x, y)
@@ -64,6 +56,11 @@ export default class Rect extends Entity {
         context.fill()
 
         context.restore()
+
+        context.beginPath()
+        context.fillStyle = '#ffffff'
+        context.arc(point.x, point.y, 5, 0, 2 * Math.PI)
+        context.fill()
     }
 
     collide(that) {

@@ -13,7 +13,7 @@ export default class Circle extends Entity {
     draw(context) {
         super.draw()
 
-        const [x, y] = this.position
+        const { x, y } = this.position
 
         context.beginPath()
         context.fillStyle = this.color

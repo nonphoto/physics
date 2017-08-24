@@ -1,9 +1,9 @@
-import {vec2} from 'gl-matrix'
 import * as physics from './physics.js'
 import Entity from './entity.js'
 import Circle from './circle.js'
 import Line from './line.js'
 import Rect from './rect.js'
+import Vector from '@nonphoto/vector'
 
 const canvas = document.getElementById('canvas')
 const context = canvas.getContext('2d')
@@ -21,9 +21,9 @@ const entities = []
 function createRandomEntity(type) {
     const x = Math.floor(Math.random() * 300) - 150
     const y = Math.floor(Math.random() * 400) - 200
-    const dx = (Math.random() * 10) - 5
-    const dy = (Math.random() * 10) - 5
-    const force = vec2.fromValues(dx, dy)
+    const dx = (Math.random() - 0.5) * 5
+    const dy = (Math.random() - 0.5) * 5
+    const force = new Vector(dx, dy)
 
     if (type === 'circle') {
         const circle = new Circle(x, y, 50, '#ff0000')
